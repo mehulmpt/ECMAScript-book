@@ -1,0 +1,25 @@
+function sendAsyncHTTP(url) {
+ return new Promise((resolve, reject) => {
+  const xhttp = new XMLHttpRequest()
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) { // success
+       resolve(xhttp.responseText)
+    } else {
+       reject(xhttp.statusText) // failed
+    }
+  };
+  xhttp.open("GET", url, true);
+  xhttp.send();
+ })
+}
+
+async function doSomeTasks() {
+   const googleContents = await sendAsyncHTTP('http://google.com')
+   console.log('Got one')
+   const packtContents = await sendAsyncHTTP('http://packtpub.com')
+   console.log('Got both')
+   return googleContents
+}
+
+doSomeTasks() // returns a Promise
+.then( res => console.log("res consists of google's contents") ) 
